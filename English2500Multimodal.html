@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Two Scores, One Show: Why One Review Is Never Enough</title>
+<meta name="description" content="An interactive argument for checking more than one review before you press play.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Limelight&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#f0b93a;--gold-d:#b07d0f;--velvet:#6e0d1b;--cream:#f4e8c8;--paper:#f1e4c3;--ink:#2a1810;--wood:#24130b;--night:#140809;
+--display:"Limelight","Abril Fatface",Georgia,serif;--serif:"Libre Baskerville",Georgia,"Times New Roman",serif;--type:"Special Elite","Courier New",monospace;
+--critic:#f0b93a;--aud:#ff8a80;--gap:#f0b93a;--line:#4a2a22;--settle:cubic-bezier(.3,.7,.4,1.25);
+--bulbs:radial-gradient(circle,#fff3c4 0 3px,#f0b93a 4px 6px,rgba(240,185,58,0) 10px);
+--curtain:repeating-linear-gradient(90deg,#6e0d1b 0 22px,#8a1424 22px 34px,#58091a 34px 52px)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{margin:0;background:radial-gradient(1200px 600px at 50% 0,#2b0d12,var(--night) 70%) fixed;color:var(--cream);font:17px/1.65 var(--serif)}
+a{color:#f5cf6e}
+:focus-visible{outline:3px solid var(--gold);outline-offset:4px}
+.thesis :focus-visible,.wc :focus-visible,.show :focus-visible,.verdict :focus-visible{outline-color:#7a1020}
+.skip{position:absolute;left:-999px;background:#fff;color:#000;padding:.5rem 1rem;z-index:99}.skip:focus{left:8px;top:8px}
+nav{position:sticky;top:0;z-index:20;background:linear-gradient(180deg,#34190f,var(--wood));border-bottom:3px double var(--gold-d);display:flex;gap:.5rem;align-items:center;padding:.7rem clamp(.8rem,3vw,2rem);overflow-x:auto;white-space:nowrap}
+nav b{font:400 17px var(--display);color:var(--gold);margin-right:auto;padding-right:1rem;letter-spacing:.03em}
+nav a,.key{color:#f5dd9c;text-decoration:none;font:400 13px var(--type);letter-spacing:.08em;text-transform:uppercase;padding:.5rem .85rem;border:1px solid rgba(240,185,58,.45);border-radius:4px;transition:transform 130ms var(--settle),background 130ms}
+nav a:hover{background:rgba(240,185,58,.15);transform:translateY(-1px)}
+nav a:active{transform:translateY(1px)}
+nav a.on{background:var(--gold);color:#1b0c0e;border-color:var(--gold)}
+main{counter-reset:bay;position:relative;width:min(1240px,100% - 24px);margin:1.2rem auto 0;border:3px double var(--gold-d);border-radius:10px;background:linear-gradient(180deg,#1d0b0e,#140809);box-shadow:0 0 0 5px #0b0405,0 26px 50px rgba(0,0,0,.6);overflow:hidden}
+main:before,main:after{content:"";display:block;height:34px;background:var(--bulbs) 0 50%/24px 34px repeat-x,#1b0c0e}
+main:before{border-bottom:2px solid var(--gold-d)}main:after{border-top:2px solid var(--gold-d)}
+.hero{counter-increment:none;background:linear-gradient(180deg,rgba(0,0,0,.55),transparent 35%,transparent 70%,rgba(0,0,0,.6)),var(--curtain);padding:4.5rem clamp(1.2rem,4vw,3rem)}
+section{counter-increment:bay;padding:4.5rem clamp(1.2rem,4vw,3rem)}
+.wrap{max-width:1000px;margin:0 auto}
+.kicker{font:400 14px var(--type);letter-spacing:.16em;text-transform:uppercase;color:#f5cf6e;margin:0}
+.kicker:before{content:"Act " counter(bay,upper-roman) " · "}
+.hero .kicker:before{content:"★ Now showing · "}
+.thesis .kicker,.wc .kicker{color:#7a1020}
+h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.1;margin:.4rem 0 1rem}
+h1{font-size:clamp(46px,7.6vw,92px);line-height:1.02;color:var(--cream);text-shadow:0 3px 0 #3d0710,0 0 22px rgba(240,185,58,.4)}
+h2{font-size:clamp(1.8rem,4vw,2.8rem);letter-spacing:.01em}
+h3{font:700 1.15rem var(--serif)}
+p{font-size:16px}
+.c{text-decoration:underline 3px var(--critic);text-underline-offset:6px}
+.a{text-decoration:underline dotted 3px var(--aud);text-underline-offset:6px}
+.hero .c{color:var(--gold)}
+.hero>.wrap{display:grid;grid-template-columns:1fr 240px;column-gap:25px;align-items:center;max-width:1100px;margin:0 auto}
+.hero p.lead{font-size:1.15rem;max-width:34em;color:#f1e2bd}
+.ctl{grid-column:2;grid-row:1/4;display:flex;flex-direction:column;align-items:center;gap:1.3rem;background:linear-gradient(180deg,#3a2216,var(--wood));border:2px solid var(--gold-d);border-radius:10px;padding:1.4rem;box-shadow:inset 0 0 0 3px #140809,0 12px 26px rgba(0,0,0,.55)}
+.vents{width:100%;height:52px;border-radius:4px;background:var(--bulbs) center/24px 26px repeat,#140809;box-shadow:inset 0 2px 6px rgba(0,0,0,.7)}
+.knob{width:150px;height:150px;border-radius:50%;display:grid;place-items:center;align-content:center;text-align:center;gap:.2rem;color:#2a1810;text-decoration:none;font:400 13px/1.3 var(--type);letter-spacing:.08em;text-transform:uppercase;background:radial-gradient(circle at 35% 30%,#fff0b0,#e2b13c 55%,#a8741a);border:4px dashed #7a5210;box-shadow:0 0 0 5px #140809,0 8px 16px rgba(0,0,0,.5);transition:transform 150ms var(--settle),box-shadow 150ms var(--settle)}
+.knob span{font-size:22px;line-height:1}
+.knob:hover{transform:translateY(-2px)}
+.knob:active{transform:translateY(3px);box-shadow:0 0 0 5px #140809,0 2px 6px rgba(0,0,0,.5)}
+.key{background:var(--cream);color:#2a1810;border:2px dashed #8a6a30;text-align:center}
+.key:hover{transform:translateY(-1px)}.key:active{transform:translateY(1px)}
+.demo{grid-column:1/-1;display:flex;gap:1.5rem;margin-top:2.5rem;flex-wrap:wrap;align-items:center;background:#0d0606;border:2px solid var(--gold-d);border-radius:8px;padding:1.5rem;box-shadow:inset 0 0 40px rgba(240,185,58,.12)}
+.dial{position:relative;width:150px;text-align:center}
+.dial svg{display:block;width:150px;height:150px;transform:rotate(-90deg)}
+.dial circle{fill:none;stroke-width:12}
+.dial .d{transition:none!important}
+.dial .t{stroke:var(--line)}
+.dial .n{position:absolute;top:0;left:0;width:150px;height:150px;margin:0;display:flex;align-items:center;justify-content:center;font:400 2rem/1 var(--display);text-decoration:none}
+.dial small{display:block;margin-top:.4rem;font:13px var(--type);letter-spacing:.12em;text-transform:uppercase;color:#e9dcb8}
+.demo .note{color:#e9dcb8}.demo cite,.demo cite a{color:#e9dcb8}
+.thesis,.show,.wc,.verdict{color:var(--ink);--critic:#c58f14;--aud:#8c1427;--line:#c9b68a}
+.thesis{margin:0 clamp(10px,2vw,24px);border:3px double var(--gold-d);border-radius:8px;background:linear-gradient(160deg,#f6ebce,#e9d9ae);box-shadow:inset 0 0 60px rgba(120,80,20,.18)}
+.thesis a,.wc a{color:#7a1020}
+.thesis blockquote{margin:0;font:italic 400 clamp(1.25rem,2.8vw,1.8rem)/1.45 var(--serif);border-left:4px solid #7a1020;padding-left:1.2rem}
+.grid{display:grid;gap:25px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.why{background:linear-gradient(180deg,#7a1020,#4a0914);color:var(--cream);border:1px solid var(--gold-d);border-radius:6px;padding:1.3rem;box-shadow:0 8px 16px rgba(0,0,0,.3),inset 0 0 0 3px rgba(240,185,58,.15)}
+.why .i{font-size:1.7rem}.why cite,.why cite a{color:#f1e2bd}.why a{color:#f5cf6e}
+.tools{display:flex;gap:.6rem;flex-wrap:wrap;margin:1.2rem 0 1.6rem}
+.chip{background:transparent;color:var(--cream);border:1px solid var(--gold-d);padding:.6rem 1rem;border-radius:4px;cursor:pointer;font:400 13px var(--type);letter-spacing:.06em;text-transform:uppercase;transition:transform 140ms var(--settle),background 140ms}
+.chip:hover{background:rgba(240,185,58,.14);transform:translateY(-1px)}.chip:active{transform:translateY(1px)}
+.chip[aria-pressed=true]{background:var(--gold);color:#1b0c0e;border-color:var(--gold)}
+.chip:before{content:"";display:inline-block;width:9px;height:9px;border-radius:50%;background:#5a3a22;margin-right:.6rem}
+.chip[aria-pressed=true]:before{background:#fff3c4;box-shadow:0 0 0 2px #b07d0f}
+.chip[aria-pressed=true]:after{content:" · selected"}
+.bar{display:grid;grid-template-columns:78px 1fr 44px;gap:.6rem;align-items:center;font:13px var(--type);text-transform:uppercase;color:#5b4630}
+.track{height:12px;background:#2a1810;border-radius:2px;overflow:hidden}
+.fill{height:100%;width:0;transition:none!important}
+.fill.c{background:#f0b93a}.fill.a{background:#e0574f}
+.bar b{text-align:center;color:var(--ink);font:700 14px var(--serif);text-decoration:none}
+.say{font-size:15px;margin:0}.say strong{display:block;font:400 12px var(--type);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.15rem}
+cite{font:13px var(--type);font-style:normal;color:#5b4630}cite a{color:#7a1020}
+.lab{background:linear-gradient(180deg,#34190f,var(--wood));border:2px solid var(--gold-d);border-radius:10px;padding:clamp(1.2rem,3vw,2rem);display:grid;gap:25px;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));box-shadow:inset 0 0 0 3px #140809}
+label{display:block;font-weight:700;margin-bottom:.3rem}
+input[type=range]{width:100%;accent-color:#f0b93a}#ra{accent-color:#e0574f}
+.verdict{background:var(--cream);border-radius:6px;padding:1.3rem;border-left:6px solid var(--gold-d);border-right:2px dashed #b9a67a}
+#verdict{--gap:#b07d0f;--aud:#2f7d4f}
+.verdict h3{margin-top:0;font-family:var(--display);font-weight:400}
+.steps{counter-reset:s;list-style:none;padding:0;display:grid;gap:1rem;margin:1.5rem 0}
+.steps li{counter-increment:s;padding:1.1rem 1.2rem 1.1rem 4.2rem;position:relative;cursor:pointer;background:#fbf3dc;border:2px dashed #b07d0f;border-radius:6px;transition:transform 140ms var(--settle),background 140ms}
+.steps li:hover{transform:translateY(-1px)}.steps li:active{transform:translateY(1px)}
+.steps li:not(:last-child):after{content:"";position:absolute;left:calc(1.1rem + 1.1rem - 1px);top:3.4rem;height:calc(100% - 2.4rem + 1rem + 4px);width:2px;background:var(--gold-d)}
+.steps li:before{content:counter(s);position:absolute;left:1.1rem;top:1.1rem;width:2.2rem;height:2.2rem;border-radius:50%;background:var(--gold);color:#1b0c0e;display:grid;place-items:center;font:400 18px var(--display)}
+.steps li.done{background:#e8dcb4}.steps li.done:before{content:"✓";background:#7a1020;color:var(--cream);font:700 16px var(--serif)}
+.steps strong{display:block}
+.prog{height:10px;background:#2a1810;border-radius:2px;overflow:hidden}.prog i{display:block;height:100%;width:0;background:#7a1020}
+.wc{background:linear-gradient(160deg,#f6ebce,#e9d9ae);border-top:4px double var(--gold-d);margin-top:3rem}
+.wc ol{padding:0;list-style:none}.wc li{padding-left:2rem;text-indent:-2rem;margin-bottom:1rem;font-size:15px}
+.note{font-size:14px;color:#5b4630}
+section:not(.thesis):not(.wc) .note{color:#e9dcb8}
+footer{width:min(1240px,100% - 24px);margin:0 auto;padding:1.5rem 0 3rem;color:#d9c488;font:13px var(--type);letter-spacing:.08em;text-transform:uppercase;text-align:center}
+@media(max-width:1100px){.hero>.wrap{grid-template-columns:1fr 200px}.knob{width:128px;height:128px;font-size:12px}}
+@media(max-width:760px){.hero>.wrap{grid-template-columns:1fr}.ctl{grid-column:1;grid-row:auto;flex-direction:row;justify-content:space-between;margin-top:1.5rem}.vents{width:70px;height:100px}.cards{grid-template-columns:1fr}.grid,.lab{grid-template-columns:1fr}.demo{gap:1rem}.demo .note{flex-basis:100%}}
+@media(max-width:370px){.knob{width:104px;height:104px;font-size:10px;border-width:3px}.vents{width:44px}.ctl{padding:1rem;gap:.8rem}.dial,.dial svg,.dial .n{width:120px}.dial svg,.dial .n{height:120px}.dial .n{font-size:1.6rem}.bar{grid-template-columns:62px 1fr 40px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}.chip:hover,.show:hover,.knob:hover,nav a:hover,.key:hover,.steps li:hover{transform:none}}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px;margin:1.6rem 0}
+.stat{background:#0d0606;border:2px solid var(--gold-d);border-radius:8px;padding:1rem 1.2rem;text-align:center;box-shadow:inset 0 0 30px rgba(240,185,58,.1)}
+.stat b{display:block;font:400 2.6rem/1.1 var(--display);color:var(--gold)}.stat span{font:13px var(--type);letter-spacing:.08em;text-transform:uppercase;color:#e9dcb8}
+.plot{background:#0d0606;border:2px solid var(--gold-d);border-radius:10px;padding:1.2rem;margin:0 0 2rem;display:grid;gap:1.5rem;grid-template-columns:minmax(260px,460px) 1fr;align-items:center}
+.plot svg{width:100%;height:auto;display:block}.plot circle{transition:r 140ms}.plot circle:hover{r:10}
+.plot figcaption p{color:#f1e2bd}.leg{display:flex;flex-wrap:wrap;gap:.4rem 1rem;font:13px var(--type);text-transform:uppercase;margin-top:1rem}
+.leg i{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:.4rem}
+.search{flex:1 1 220px;max-width:340px;background:#0d0606;color:var(--cream);border:1px solid var(--gold-d);border-radius:4px;padding:.6rem .9rem;font:15px var(--type)}.search::placeholder{color:#b9a67a}
+.tools.f{margin:0 0 .8rem}
+.cards{display:grid;gap:25px;grid-template-columns:repeat(auto-fill,minmax(min(100%,420px),1fr));background:#24120e;border:2px solid #3b2216;border-radius:10px;padding:1.4rem;box-shadow:inset 0 4px 14px rgba(0,0,0,.6)}
+.show{position:relative;background:var(--cream);border-radius:6px;padding:10px;box-shadow:0 8px 16px rgba(0,0,0,.5);transition:transform 140ms var(--settle)}.show:hover{transform:translateY(-3px)}
+.top{display:grid;grid-template-columns:118px 1fr;gap:14px}
+.poster{position:relative;aspect-ratio:2/3;border-radius:3px;overflow:hidden;background:linear-gradient(135deg,hsl(var(--h) 45% 30%),hsl(var(--h) 40% 12%)) center/cover no-repeat;filter:sepia(.5) contrast(1.05);transition:filter 150ms;display:grid;place-items:center;color:var(--cream);box-shadow:0 0 0 3px #0a0505,0 0 0 4px var(--gold-d)}
+.poster:after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(180deg,transparent 0 4px,#e8dcc0 4px 10px,transparent 10px 16px) 3px 0/7px 100% no-repeat,repeating-linear-gradient(180deg,transparent 0 4px,#e8dcc0 4px 10px,transparent 10px 16px) calc(100% - 3px) 0/7px 100% no-repeat,linear-gradient(90deg,#0a0505 0 13px,transparent 13px calc(100% - 13px),#0a0505 calc(100% - 13px))}
+.show:hover .poster,.poster.has:focus{filter:none}
+.ini{font:400 1.8rem var(--display);text-shadow:0 2px 6px #000}.poster.has .ini{display:none}
+.info{display:flex;flex-direction:column;gap:.45rem;min-width:0}.info h3{font:400 1.25rem/1.15 var(--display);margin:0}
+.meta{font:13px var(--type);color:#5b4630}
+.badge{align-self:flex-start;background:var(--gold);color:#1b0c0e;font:400 12px var(--type);border-radius:3px;padding:.25rem .55rem;text-transform:uppercase}.badge.ok{background:#2a1810;color:var(--cream)}
+.tag{font:13px var(--type);color:#7a1020}
+.body{position:relative;margin-top:14px;padding:1rem .4rem .5rem;display:grid;gap:.8rem;border-top:2px dashed #b9a67a}
+.body:before,.body:after{content:"";position:absolute;top:-11px;width:20px;height:20px;border-radius:50%;background:#24120e}.body:before{left:-20px}.body:after{right:-20px}
+.empty{color:var(--cream);grid-column:1/-1;text-align:center}
+.moreBar{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-top:1.2rem}
+.why .i img{display:block}
+@media(max-width:760px){.plot{grid-template-columns:1fr}.top{grid-template-columns:96px 1fr}}
+.pset{margin:0 0 1.2rem;border:1px solid var(--gold-d);border-radius:6px;padding:.7rem 1rem;background:#0d0606}
+.pset summary{cursor:pointer;font:14px var(--type);letter-spacing:.06em;text-transform:uppercase;color:#f5cf6e}
+.prow{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;margin:.6rem 0}
+.m0{--art:repeating-conic-gradient(from 0deg at 50% 72%,hsl(var(--h) 55% 32%) 0 9deg,hsl(var(--h) 55% 19%) 9deg 18deg)}
+.m1{--art:repeating-radial-gradient(circle at 50% 100%,hsl(var(--h) 50% 32%) 0 16px,hsl(var(--h) 50% 17%) 16px 32px)}
+.m2{--art:repeating-linear-gradient(135deg,hsl(var(--h) 50% 30%) 0 14px,hsl(var(--h) 50% 18%) 14px 28px)}
+.m3{--art:radial-gradient(circle at 50% 36%,hsl(var(--h) 75% 50%) 0 20%,transparent 21%),repeating-linear-gradient(0deg,hsl(var(--h) 45% 22%) 0 10px,hsl(var(--h) 45% 14%) 10px 20px)}
+.poster{background:linear-gradient(180deg,rgba(0,0,0,.05) 30%,rgba(0,0,0,.8)),var(--art) center/cover no-repeat}
+.ini{position:absolute;inset:0 16px;z-index:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;text-align:center;padding-bottom:12px;gap:.25rem}
+.ini b{font:400 .82rem/1.1 var(--display);text-shadow:0 2px 6px #000;overflow-wrap:anywhere}
+.ini i{font:normal 10px var(--type);letter-spacing:.06em;text-transform:uppercase;color:#f5dd9c}
+.ini u{text-decoration:none;font:10px var(--type);color:var(--cream);opacity:.85}
+@media(max-width:760px){.ini b{font-size:.7rem}}
+.seasons{display:flex;gap:.3rem;flex-wrap:wrap}
+.sn{background:transparent;color:var(--ink);border:1px solid #8a6a30;border-radius:3px;padding:.1rem .5rem;font:13px var(--type);cursor:pointer;transition:background 120ms}
+.sn:hover{background:#e8dcb4}.sn[aria-pressed=true]{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.stats{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<nav aria-label="Main">
+  <b>Two Scores, One Show</b>
+  <a href="#argument">Argument</a><a href="#compare">Compare</a><a href="#why">Why they differ</a><a href="#lab">Gap Lab</a><a href="#method">Method</a><a href="#works-cited">Works Cited</a>
+</nav>
+
+<main id="main">
+<header class="hero"><div class="wrap">
+  <p class="kicker">A guide for anyone hunting for their next series</p>
+  <h1>One rating won’t tell you <span class="c">what</span> to watch.<br>Two might.</h1>
+  <p class="lead">Critics and everyday viewers regularly score the very same season in completely different ways. Before you spend ten hours on a show, check both sides.</p>
+  <div class="ctl"><div class="vents" aria-hidden="true"></div><a class="knob" href="#compare"><span aria-hidden="true">↓</span>See the evidence</a><a class="key" href="#argument">The argument</a></div>
+  <div class="demo" role="img" aria-label="Example: critics scored The Last of Us Season 2 at 92 percent, audiences at 37 percent">
+    <div class="dial"><svg viewBox="0 0 150 150"><circle class="t" cx="75" cy="75" r="62"/><circle class="d" data-v="92" data-col="var(--critic)" cx="75" cy="75" r="62"/></svg><div class="n c" data-count="92">0%</div><small>Critics</small></div>
+    <div class="dial"><svg viewBox="0 0 150 150"><circle class="t" cx="75" cy="75" r="62"/><circle class="d" data-v="37" data-col="var(--aud)" cx="75" cy="75" r="62"/></svg><div class="n a" data-count="37">0%</div><small>Audience</small></div>
+    <p class="note" style="align-self:center;max-width:22em">The Last of Us, Season 2 on Rotten Tomatoes. Same episodes, a 55-point gap <cite>(<a href="#wc-tlou">“The Last of Us: Season 2”</a>)</cite>.</p>
+  </div>
+</div></header>
+
+<section class="thesis" id="argument"><div class="wrap">
+  <p class="kicker">The argument</p>
+  <blockquote>Viewers should consult more than one review before choosing a show, because critics and audiences often judge the same series differently, and only by weighing both can you find out which opinion matches your own taste.</blockquote>
+  <p style="margin-top:1.5rem">Review sites feel like a shortcut: one number, one decision. But a single number hides who gave it and what they were judging. This site puts critic and audience scores side by side so you can see how often they disagree, and what to do when they do.</p>
+</div></section>
+
+<section id="compare"><div class="wrap">
+  <p class="kicker">The evidence</p>
+  <h2>Same show. Different verdicts.</h2>
+  <p>Scores are Rotten Tomatoes’ Tomatometer (critics) and Popcornmeter (audience): the share of reviews that are positive. Most come from Rotten Tomatoes pages checked on Nov. 16, 2026. A few come from news reports, marked on their cards, and may have changed. Poster images load from free sources (TVmaze and Wikipedia) when you are online.</p>
+  <div class="stats" id="stats"></div>
+  <figure class="plot" style="margin-inline:0"><div id="plot"></div><figcaption><h3>The big picture</h3><p>Each dot is one season or film. A dot on the dashed line means critics and viewers agree. The farther a dot sits from the line, the bigger the disagreement. Dots above the line are shows critics liked more; dots below are shows audiences liked more.</p><div class="leg"><span><i style="background:#f0b93a"></i>Critics higher</span><span><i style="background:#ff8a80"></i>Audience higher</span><span><i style="background:#f4e8c8"></i>Within 10 points</span></div></figcaption></figure>
+  <div class="tools f" role="group" aria-label="Filter shows"><label for="q" class="note" style="margin:0;align-self:center">Search</label><input id="q" class="search" type="search" placeholder="Search by title…" autocomplete="off">
+    <button class="chip" data-filt="all" aria-pressed="true">All</button><button class="chip" data-filt="split" aria-pressed="false">Big splits</button><button class="chip" data-filt="critics" aria-pressed="false">Critics higher</button><button class="chip" data-filt="audience" aria-pressed="false">Audience higher</button><button class="chip" data-filt="agree" aria-pressed="false">They agree</button></div>
+  <div class="tools" role="group" aria-label="Sort shows" style="margin-top:0">
+    <button class="chip" data-sort="gap" aria-pressed="true">Biggest disagreement</button><button class="chip" data-sort="critic" aria-pressed="false">Critics’ favorite</button><button class="chip" data-sort="audience" aria-pressed="false">Audience favorite</button><button class="chip" data-sort="year" aria-pressed="false">Newest</button></div>
+  <details class="pset" open><summary>Save the posters into this file</summary>
+    <p class="note">Every card has its own poster art, and real posters replace it automatically when your browser can reach TVmaze or Wikipedia. There is nothing to sign up for. Once real posters show, click the first button to download a copy with the posters built in. It works offline and for anyone you share it with. <em>Optional:</em> a TMDB key can be added as an extra poster source.</p>
+    <div class="prow"><button class="chip" id="bake">Download copy with posters built in</button><input id="tk" class="search" type="password" placeholder="Optional: TMDB key" autocomplete="off" aria-label="Optional TMDB API key"><button class="chip" id="tsave">Save key</button></div>
+    <p class="note" id="pstat" role="status"></p></details>
+  <div class="cards" id="cards" aria-live="polite"></div>
+  <p class="note" id="pnote" role="status"></p>
+  <div class="moreBar"><span class="note" id="count"></span><button class="chip" id="more">Show more titles</button></div>
+  <p class="note" style="margin-top:1.5rem"><strong>Note:</strong> Not every show splits viewers. Several seasons here, such as <em>Stranger Things</em> Season 1, show critics and audiences nearly agreeing. That is exactly why checking both is useful: when they match, you can be more confident.</p>
+</div></section>
+
+<section id="why" class="thesis"><div class="wrap">
+  <p class="kicker">The reasons</p>
+  <h2>Why do the scores split?</h2>
+  <div class="grid">
+    <div class="why"><div class="i"><img src="https://api.iconify.design/lucide/graduation-cap.svg?color=%23f5cf6e" alt="" width="36" height="36"></div><h3>Different judges</h3><p>Critics watch whole seasons for work, often before release. Audiences are mostly people who already chose the show, and many are devoted fans of the source material.</p></div>
+    <div class="why"><div class="i"><img src="https://api.iconify.design/lucide/book-open.svg?color=%23f5cf6e" alt="" width="36" height="36"></div><h3>Different questions</h3><p>A critic may ask, “Is this well made?” A fan may ask, “Is this the story I loved?” Both are fair, but they produce different numbers.</p></div>
+    <div class="why"><div class="i"><img src="https://api.iconify.design/lucide/megaphone.svg?color=%23f5cf6e" alt="" width="36" height="36"></div><h3>Backlash campaigns</h3><p>Audience scores can be swept up in organized outrage. Coverage of The Last of Us’s second season described it as being review bombed <cite>(<a href="#wc-push">“Just Like the Game”</a>)</cite>.</p></div>
+    <div class="why"><div class="i"><img src="https://api.iconify.design/lucide/percent.svg?color=%23f5cf6e" alt="" width="36" height="36"></div><h3>Percent isn’t “stars”</h3><p>Both meters report the share of reviews that are positive, not how much people loved it. An 84% can mean a lot of lukewarm approvals.</p></div>
+  </div>
+</div></section>
+
+<section id="lab"><div class="wrap">
+  <p class="kicker">Try it yourself</p>
+  <h2>The Gap Lab</h2>
+  <p>Look up any show’s two scores, enter them here, and get a plan for how to read the gap.</p>
+  <div class="lab">
+    <div>
+      <label for="rc">Critics’ score: <b class="c" id="vc">80</b>%</label><input type="range" id="rc" min="0" max="100" value="80">
+      <label for="ra" style="margin-top:1.4rem">Audience score: <b class="a" id="va">40</b>%</label><input type="range" id="ra" min="0" max="100" value="40">
+      <p class="note">Gap: <b id="vg">40</b> points</p>
+    </div>
+    <div class="verdict" id="verdict" aria-live="polite"></div>
+  </div>
+</div></section>
+
+<section id="method" class="thesis"><div class="wrap">
+  <p class="kicker">Your game plan</p>
+  <h2>Before you press play</h2>
+  <p>Click each step as you complete it.</p>
+  <ol class="steps" id="steps">
+    <li tabindex="0" role="checkbox" aria-checked="false"><strong>Check the critics.</strong> Find the critic score and read one or two full reviews, not just the headline number.</li>
+    <li tabindex="0" role="checkbox" aria-checked="false"><strong>Check the audience.</strong> Compare it with viewer scores and skim a few audience comments, noticing what they praise or complain about.</li>
+    <li tabindex="0" role="checkbox" aria-checked="false"><strong>Look at the gap.</strong> If the scores match, trust them. If they don’t, find out why (pacing? faithfulness to the book or game? a loud backlash?).</li>
+    <li tabindex="0" role="checkbox" aria-checked="false"><strong>Match it to your taste.</strong> Decide which kind of reviewer sounds most like you, then watch the pilot and judge for yourself.</li>
+  </ol>
+  <div class="prog"><i id="pbar"></i></div><p class="note" id="ptxt">0 of 4 steps done</p>
+</div></section>
+
+<section id="works-cited" class="wc"><div class="wrap">
+  <p class="kicker">Sources</p>
+  <h2>Works Cited</h2>
+  <ol id="wclist"></ol>
+  <p class="note">Visuals are original CSS designs. No outside images, audio, or video are used.</p>
+</div></section>
+</main>
+<footer>Made for ENGL 2500, Multimodal Argument · Scores are snapshots and change over time.<br>Poster images via TVmaze and Wikipedia. If a TMDB key is used: this product uses the TMDB API but is not endorsed or certified by TMDB.</footer>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const ACC='16 Nov. 2026',SRC={};
+const rt=(k,t,p,sh)=>SRC[k]=[sh||t,`“${t}.” <i>Rotten Tomatoes</i>, Fandango, www.rottentomatoes.com/${p}. Accessed ${ACC}.`];
+const wb=(k,sh,t,site,url,pre='',date='')=>SRC[k]=[sh,`${pre}“${t}.” <i>${site}</i>, ${date?date+', ':''}${url}. Accessed ${ACC}.`];
+rt('tlou','The Last of Us: Season 2','tv/the_last_of_us/s02');
+rt('rop1','The Lord of the Rings: The Rings of Power: Season 1','tv/the_lord_of_the_rings_the_rings_of_power/s01','The Rings of Power: Season 1');
+rt('rop2','The Lord of the Rings: The Rings of Power: Season 2','tv/the_lord_of_the_rings_the_rings_of_power/s02','The Rings of Power: Season 2');
+rt('gg','Ginny & Georgia: Season 1','tv/ginny_georgia/s01');
+rt('got8','Game of Thrones: Season 8','tv/game_of_thrones/s08');
+rt('acolyte','Star Wars: The Acolyte: Season 1','tv/star_wars_the_acolyte/s01');
+rt('ahsoka','Star Wars: Ahsoka: Season 1','tv/star_wars_ahsoka/s01');
+rt('wed','Wednesday: Season 1','tv/wednesday/s01');
+rt('eip4','Emily in Paris: Season 4','tv/emily_in_paris/s04');
+rt('cma','Call My Agent!: Season 1','tv/call_my_agent/s01');
+rt('scream','Scream','tv/scream');
+wb('got','Game of Thrones Seasons Ranked','Game of Thrones Seasons Ranked by Rotten Tomatoes Scores','TheWrap','thewrap.com/game-of-thrones-seasons-ranked-by-rotten-tomatoes-scores');
+wb('eip1','Emily in Paris Gets One More Try','58 Million Viewers, 62% Critics Score, Five Seasons of Repetition: ‘Emily in Paris’ Gets One More Try','The Statesman','www.thestatesman.com/entertainment/ott/emily-in-paris-ending-season-6-critical-analysis-viewership-legacy-1503596741.html');
+wb('voy','Star Trek: Voyager, Ranked','All 7 Seasons of Star Trek: Voyager, Ranked','Looper','www.looper.com/2161505/star-trek-voyager-seasons-ranked/');
+wb('st5','Stranger Things Season 5 Is a Disappointment','Stranger Things Season 5 Is a Disappointment, Fans Have Spoken Their Minds','FandomWire','fandomwire.com/stranger-things-season-5-is-a-disappointment-fans-reaction/');
+wb('st1a','Stranger Things Records Lowest Score','Stranger Things Season 5 Records the Lowest Ever Rotten Tomatoes Score in the Series’ History','Soap Central','www.soapcentral.com/shows/stranger-things-season-5-records-lowest-ever-rotten-tomatoes-score-series-history');
+wb('st1b','Stranger Things 5 Gets Review Bombed','‘Stranger Things 5’ Gets Review Bombed as Will’s Coming Out Becomes Worst-Rated Episode on IMDb','Variety','au.variety.com/2025/tv/news/stranger-things-5-review-bombed-will-coming-out-episode-31477','Shanfeld, Ethan. ','5 Jan. 2026');
+wb('offc','A Show With 96% on Rotten Tomatoes','A Show With 96% on Rotten Tomatoes Is Beating the Final Season of The Boys in Amazon Prime’s Top Ten','CinemaBlend','www.cinemablend.com/streaming-news/off-campus-96-percent-rotten-tomatoes-beating-final-season-the-boys-amazon-prime-top-ten-off-campus');
+wb('wbay','Apple TV’s New Comedy Horror Series','Apple TV’s New Comedy Horror Series Launches With 100% Rotten Tomatoes Score','BGR','www.bgr.com/2161575/apple-tv-comedy-horror-series-widows-bay-100-rotten-tomatoes-score/');
+rt('lastjedi','Star Wars: The Last Jedi','m/star_wars_the_last_jedi');
+rt('rotsw','Star Wars: The Rise of Skywalker','m/star_wars_the_rise_of_skywalker');
+rt('joker','Joker','m/joker_2019');rt('morbius','Morbius','m/morbius');
+rt('halo','Halo: Season 1','tv/halo/s01');rt('wit3','The Witcher: Season 3','tv/the_witcher/s03');rt('witrt','The Witcher','tv/the_witcher');
+wb('witgp','The Witcher Staffel 4 Rekord','So schlecht wurde noch keine The Witcher-Staffel auf Rotten Tomatoes bewertet','GamePro','www.gamepro.de/artikel/the-witcher-staffel-4-rekord-rotten-tomatoes,3442288.html');
+wb('fand','All Spider-Man Movies Ranked','All Spider-Man Movies Ranked, Including Venom and Morbius','Fandango','www.fandango.com/movie-news/all-spider-man-movies-ranked-including-venom-and-morbius-754999');
+wb('push','Just Like the Game','Just Like the Game, The Last of Us 2’s TV Adaptation Is Getting Review Bombed','Push Square','www.pushsquare.com/news/2025/05/just-like-the-game-the-last-of-us-2s-tv-adaptation-is-getting-review-bombed');
+SRC.wiki=['MediaWiki Action API',`“MediaWiki Action API.” <i>Wikimedia Foundation</i>, www.mediawiki.org/wiki/API:Main_page. Accessed ${ACC}.`];
+SRC.tmdb=['TMDB API',`“TMDB API.” <i>The Movie Database</i>, developer.themoviedb.org. Accessed ${ACC}.`];
+SRC.tvmaze=['TVmaze API',`“TVmaze API.” <i>TVmaze</i>, www.tvmaze.com/api. Accessed ${ACC}.`];
+SRC.iconify=['Iconify API',`“Iconify API.” <i>Iconify</i>, iconify.design/docs/api/. Accessed ${ACC}.`];
+$('#wclist').innerHTML=Object.entries(SRC).sort((a,b)=>a[1][1].replace(/<[^>]+>|[“”‘’"]/g,'').toLowerCase().localeCompare(b[1][1].replace(/<[^>]+>|[“”‘’"]/g,'').toLowerCase())).map(([k,v])=>`<li id="wc-${k}">${v[1]}</li>`).join('');
+const cite=ids=>'('+ids.map(i=>`<a href="#wc-${i}">“${SRC[i][0]}”</a>`).join('; ')+')';
+
+// [title, season, year, platform, critics, audience, TVmaze query, sources, critic summary, audience summary, reported-only?]
+const SHOWS=[
+['The Last of Us','Season 2',2025,'HBO',92,37,'The Last of Us',['tlou'],'Critics saw a challenging, morally complex season with superb performances.','Many viewers objected to story changes and the fate of a beloved character.'],
+['The Rings of Power','Season 1',2022,'Prime Video',84,38,'The Lord of the Rings: The Rings of Power',['rop1'],'Critics praised its opulent look and heartfelt take on Middle-earth.','Many viewers found it disappointing or unfaithful to Tolkien.'],
+['The Rings of Power','Season 2',2024,'Prime Video',84,59,'The Lord of the Rings: The Rings of Power',['rop2'],'Critics found it more kinetic than season one, though some flaws remained.','Viewers split: some loved the action, others rejected the show outright.'],
+['Ginny & Georgia','Season 1',2021,'Netflix',68,69,'Ginny & Georgia',['gg'],'Critics found its tone ambitious and entertaining.','Viewers praised the cast and the cliffhanger endings.'],
+['Game of Thrones','Season 3',2013,'HBO',96,97,'Game of Thrones',['got'],'Critics rated it among the best seasons of the series.','Fans agreed, scoring it even higher.'],
+['Game of Thrones','Season 7',2017,'HBO',93,82,'Game of Thrones',['got'],'Critics stayed very positive.','Fans were warm, but a notch cooler than critics.'],
+['Game of Thrones','Season 8',2019,'HBO',55,30,'Game of Thrones',['got8'],'Critics said it sacrificed character arcs for spectacle in a rush to the finish.','Fans rejected the ending; it is the series’ lowest audience score by far.'],
+['Star Wars: The Acolyte','Season 1',2024,'Disney+',79,19,'The Acolyte',['acolyte'],'Critics praised its risks with Star Wars lore.','Scores sank amid review-bombing and fan complaints about the lore.'],
+['Star Wars: Ahsoka','Season 1',2023,'Disney+',85,64,'Ahsoka',['ahsoka'],'Critics were broadly positive.','Viewers were positive, but noticeably less so.'],
+['Wednesday','Season 1',2022,'Netflix',73,86,'Wednesday',['wed'],'Critics’ reviews were mixed to positive.','Viewers embraced it, scoring well above critics.'],
+['Emily in Paris','Season 1',2020,'Netflix',61,54,'Emily in Paris',['eip1'],'Critics called it a charming but clichéd rom-com fantasy.','Viewers were lukewarm.'],
+['Emily in Paris','Season 4',2024,'Netflix',68,49,'Emily in Paris',['eip4'],'Critics were moderately positive.','Viewers were noticeably cooler on the later season.'],
+['Star Trek: Voyager','Season 3',1996,'UPN',100,79,'Star Trek: Voyager',['voy'],'Critics scored it perfectly.','Fans liked it, though some call its writing inconsistent.'],
+['Star Trek: Voyager','Season 7',2000,'UPN',64,84,'Star Trek: Voyager',['voy'],'Critics cooled on the final season.','Fans stayed warm and scored it far higher.'],
+['Stranger Things','Season 1',2016,'Netflix',97,96,'Stranger Things',['st1a','st1b'],'Critics loved it.','So did viewers.'],
+['Stranger Things','Season 5',2025,'Netflix',84,56,'Stranger Things',['st5'],'Critics stayed positive, though it is the series’ lowest critic score.','Fans were disappointed; review-bombing was reported.',1],
+['Scream','Series average',2015,'MTV',61,58,'Scream',['scream'],'Critics were lukewarm.','Viewers rated it about the same.'],
+['Call My Agent!','Season 1',2015,'Netflix',100,97,'Dix pour cent',['cma'],'A perfect score, but from only 7 critic reviews, a tiny sample.','Viewers loved it too.'],
+['Off Campus','Season 1',2026,'Prime Video',96,89,'Off Campus',['offc'],'Critics were enthusiastic.','Viewers agreed.',1],
+['Widow’s Bay','Season 1',2026,'Apple TV',100,93,'Widow\'s Bay',['wbay'],'A perfect score at launch.','Viewers were very positive too.',1],
+['Halo','Season 1',2022,'Paramount+',70,52,'Halo',['halo'],'Critics found it derivative but promising.','Viewers were less convinced.'],
+['The Witcher','Season 1',2019,'Netflix',68,88,'The Witcher',['witrt','witgp'],'Critics were lukewarm.','Viewers loved it.'],
+['The Witcher','Season 2',2021,'Netflix',95,54,'The Witcher',['witrt','witgp'],'Critics called it a big improvement.','Viewers were split.'],
+['The Witcher','Season 3',2023,'Netflix',79,19,'The Witcher',['wit3'],'Critics gave Henry Cavill’s Geralt a fond farewell.','The audience score hit a series low amid reported review-bombing.'],
+['Star Wars: The Last Jedi','Film',2017,'Lucasfilm',91,41,'film:Star Wars: The Last Jedi',['lastjedi'],'Critics largely praised it.','Fans received it poorly, one of the lowest audience scores in Star Wars.'],
+['Star Wars: The Rise of Skywalker','Film',2019,'Lucasfilm',51,86,'film:Star Wars: The Rise of Skywalker',['rotsw'],'Critics were split, landing just above rotten.','Fans scored it far higher, almost the reverse of The Last Jedi.'],
+['Star Wars: The Force Awakens','Film',2015,'Lucasfilm',93,84,'film:Star Wars: The Force Awakens',['rotsw'],'Critics loved it.','Fans liked it too, a bit less.'],
+['Joker','Film',2019,'Warner Bros.',68,89,'film:Joker 2019',['joker'],'Critics were divided.','Audiences scored it far higher.'],
+['Morbius','Film',2022,'Sony',15,71,'film:Morbius',['morbius'],'Critics called it a mess with uninspired effects and a nonsensical story.','Audiences were far kinder.'],
+['Madame Web','Film',2024,'Sony',11,57,'film:Madame Web',['fand'],'Critics panned it.','Viewers were kinder, but still mixed.',1],
+['Venom','Film',2018,'Sony',30,80,'film:Venom 2018',['fand'],'Critics were harsh.','Viewers liked it far more.',1],
+['Venom: Let There Be Carnage','Film',2021,'Sony',57,84,'film:Venom: Let There Be Carnage',['fand'],'Critics were mixed.','Viewers were enthusiastic.',1],
+['Spider-Man','Film',2002,'Sony',90,67,'film:Spider-Man 2002',['fand'],'Critics rated it highly.','Viewers liked it, but scored it much lower.',1],
+['Spider-Man 3','Film',2007,'Sony',63,51,'film:Spider-Man 3',['fand'],'Critics were mildly positive.','Viewers were lukewarm.',1],
+['Spider-Man: Far From Home','Film',2019,'Sony',90,95,'film:Spider-Man: Far From Home',['fand'],'Critics loved it.','So did viewers.',1]
+].map(r=>({t:r[0],s:r[1],y:r[2],p:r[3],c:r[4],a:r[5],q:r[6],src:r[7],cs:r[8],as:r[9],rep:r[10],f:r[6].startsWith('film:'),h:[...r[0]].reduce((x,ch)=>(x*31+ch.charCodeAt(0))%360,7)}));
+const GROUPS=[];const gap=x=>x.c-x.a,kind=x=>{const d=gap(x);return Math.abs(d)<10?'agree':d>0?'critics':'audience'};
+SHOWS.forEach(x=>{let g=GROUPS.find(g=>g.t===x.t);if(!g)GROUPS.push(g={t:x.t,items:[],sel:0});g.items.push(x)});GROUPS.forEach(g=>g.items.forEach((x,i)=>{if(Math.abs(gap(x))>Math.abs(gap(g.items[g.sel])))g.sel=i}));
+const ini=t=>t.replace(/[^A-Za-z ]/g,'').split(' ').filter(w=>w.length>2||/^[A-Z]/.test(w)).map(w=>w[0]).join('').slice(0,3).toUpperCase();
+
+// Stats + scatter plot
+const sp=SHOWS.filter(x=>Math.abs(gap(x))>=20).length,avg=Math.round(SHOWS.reduce((n,x)=>n+Math.abs(gap(x)),0)/SHOWS.length);
+$('#stats').innerHTML=`<div class="stat"><b>${GROUPS.length}</b><span>Shows &amp; films</span></div><div class="stat"><b>${SHOWS.length}</b><span>Scores compared</span></div><div class="stat"><b>${sp}</b><span>Split by 20+ points</span></div><div class="stat"><b>${avg}</b><span>Average gap, in points</span></div>`;
+const X=v=>50+v*3.3,Y=v=>380-v*3.3,col={critics:'#f0b93a',audience:'#ff8a80',agree:'#f4e8c8'};
+$('#plot').innerHTML=`<svg viewBox="0 0 400 420" role="img" aria-label="Scatter plot of audience score (horizontal) against critic score (vertical) for ${SHOWS.length} shows. Points far from the diagonal are shows where the two groups disagree.">
+${[0,25,50,75,100].map(v=>`<line x1="${X(v)}" x2="${X(v)}" y1="${Y(0)}" y2="${Y(100)}" stroke="#3b2a22"/><line y1="${Y(v)}" y2="${Y(v)}" x1="${X(0)}" x2="${X(100)}" stroke="#3b2a22"/><text x="${X(v)}" y="402" fill="#e9dcb8" font-size="11" text-anchor="middle">${v}</text><text x="40" y="${Y(v)+4}" fill="#e9dcb8" font-size="11" text-anchor="end">${v}</text>`).join('')}
+<line x1="${X(0)}" y1="${Y(0)}" x2="${X(100)}" y2="${Y(100)}" stroke="#f4e8c8" stroke-dasharray="5 5"/>
+<text x="${X(100)-4}" y="${Y(100)+16}" fill="#f4e8c8" font-size="11" text-anchor="end">critics = audience</text>
+${SHOWS.map(x=>`<circle cx="${X(x.a)}" cy="${Y(x.c)}" r="6.5" fill="${col[kind(x)]}" fill-opacity=".85" stroke="#140809" stroke-width="1.5"><title>${x.t} ${x.s}: critics ${x.c}%, audience ${x.a}%</title></circle>`).join('')}
+<text x="${X(50)}" y="418" fill="#f5cf6e" font-size="12" text-anchor="middle">Audience score →</text><text transform="translate(12 ${Y(50)}) rotate(-90)" fill="#f5cf6e" font-size="12" text-anchor="middle">Critic score →</text></svg>`;
+
+// Posters via TVmaze API (falls back to a styled placeholder if offline)
+// ---- Posters: baked-in copy -> TMDB (optional key) -> TVmaze -> Wikipedia -> styled placeholder ----
+const TMDB_KEY='';/*BAKE*/const BAKED={}/*END*/;
+const IMG=new Map(),nm=s=>s.toLowerCase().replace(/[^a-z0-9]/g,'');
+const key=()=>{let k='';try{k=localStorage.getItem('tmdbKey')||''}catch(e){}return(k||TMDB_KEY).trim()};
+const ok=(n,q)=>n&&(nm(n).includes(nm(q))||nm(q).includes(nm(n)));
+const tmdb=async Q=>{const k=key();if(!k)return null;const f=Q.startsWith('film:'),q=f?Q.slice(5):Q,v4=k.startsWith('eyJ');
+  const r=await fetch('https://api.themoviedb.org/3/search/'+(f?'movie':'tv')+'?query='+encodeURIComponent(q)+(v4?'':'&api_key='+k),v4?{headers:{Authorization:'Bearer '+k}}:{});
+  if(!r.ok)return null;const j=await r.json(),m=(j.results||[]).find(x=>x.poster_path&&[x.name,x.original_name,x.title,x.original_title].some(n=>ok(n,q)));
+  return m?'https://image.tmdb.org/t/p/w342'+m.poster_path:null};
+const tvmaze=Q=>Q.startsWith('film:')?Promise.resolve(null):fetch('https://api.tvmaze.com/search/shows?q='+encodeURIComponent(Q)).then(r=>r.ok?r.json():[]).then(a=>{const m=a.find(x=>x.show.image&&ok(x.show.name,Q));return m?m.show.image.medium.replace('http:','https:'):null});
+const BAD=/video game|season|episode|soundtrack|characters|list of|novel|album|\(band\)|\(franchise\)/i;
+const wiki=Q=>{const f=Q.startsWith('film:'),q=f?Q.slice(5):Q,pref=f?/film/i:/tv series|television/i;
+  return fetch('https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrlimit=6&gsrsearch='+encodeURIComponent(q+(f?' film':' television series'))+'&prop=pageimages&piprop=thumbnail&pithumbsize=342').then(r=>r.json()).then(j=>{
+  const m=Object.values((j.query||{}).pages||{}).filter(p=>p.thumbnail&&ok(p.title,q)&&!BAD.test(p.title)&&(f||!/film\)/i.test(p.title))).sort((a,b)=>(pref.test(a.title)?0:1)-(pref.test(b.title)?0:1)||a.index-b.index)[0];return m?m.thumbnail.source:null})};
+const getImg=q=>{if(!IMG.has(q))IMG.set(q,Promise.resolve(BAKED[q]||null).then(u=>u||tmdb(q).catch(()=>null)).then(u=>u||tvmaze(q).catch(()=>null)).then(u=>u||wiki(q).catch(()=>null)));return IMG.get(q)};
+$('#tk').value=key()?'••••••••':'';
+$('#tsave').onclick=()=>{const v=$('#tk').value.trim();if(!v||v.startsWith('•'))return $('#pstat').textContent='Paste your TMDB key first.';
+  try{localStorage.setItem('tmdbKey',v)}catch(e){}IMG.clear();render();$('#tk').value='••••••••';$('#pstat').textContent='Key saved. Loading posters…'};
+$('#bake').onclick=async()=>{const st=$('#pstat'),qs=[...new Set(SHOWS.map(x=>x.q))],out={};let n=0;
+  for(const q of qs){st.textContent=`Saving posters… ${++n} of ${qs.length}`;
+    try{const u=await getImg(q);if(!u)continue;if(u.startsWith('data:')){out[q]=u;continue}
+      const b=await(await fetch(u)).blob();out[q]=await new Promise(r=>{const f=new FileReader();f.onload=()=>r(f.result);f.readAsDataURL(b)})}catch(e){}}
+  const got=Object.keys(out).length;if(!got){st.textContent='No posters could be saved. Add a TMDB key first and make sure posters are showing.';return}
+  const M1='/*BA'+'KE*/',M2='/*E'+'ND*/',h='<!DOCTYPE html>\n'+document.documentElement.outerHTML,i=h.indexOf(M1+'const BAKED='),j=h.indexOf(M2,i)+M2.length;
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([h.slice(0,i)+M1+'const BAKED='+JSON.stringify(out)+M2+h.slice(j)],{type:'text/html'}));
+  a.download='two-scores-one-show-with-posters.html';a.click();st.textContent=`Downloaded a copy with ${got} of ${qs.length} posters built in. Submit that file.`};
+
+let sort='gap',filt='all',term='',limit=8;
+const F={all:()=>1,split:x=>Math.abs(gap(x))>=20,agree:x=>kind(x)==='agree',critics:x=>kind(x)==='critics',audience:x=>kind(x)==='audience'};
+const snLab=s=>{const m=s.match(/^Season (\d+)/);return m?'S'+m[1]:'All'};
+function render(){
+  const k={gap:x=>-Math.abs(gap(x)),critic:x=>-x.c,audience:x=>-x.a,year:x=>-x.y}[sort];
+  const list=GROUPS.map((g,gi)=>({g,gi,x:g.items[g.sel]})).filter(o=>o.g.items.some(F[filt])&&(o.g.t+' '+o.g.items.map(i=>i.s).join(' ')).toLowerCase().includes(term)).sort((a,b)=>k(a.x)-k(b.x)),vis=list.slice(0,limit);
+  $('#cards').innerHTML=vis.map(({g,gi,x})=>{const d=gap(x),kd=kind(x);
+    return `<article class="show"><div class="top"><div class="poster m${x.h%4}" data-q="${x.q.replace(/"/g,'&quot;')}" style="--h:${x.h}" role="img" aria-label="Poster for ${x.t}"><span class="ini" aria-hidden="true"><b>${x.t}</b><i>${x.f?'Film':x.s}</i><u>${x.y}</u></span></div>
+    <div class="info"><span class="badge ${kd==='agree'?'ok':''}">${kd==='agree'?'They agree':kd==='critics'?'Critics +'+d:'Audience +'+-d}</span><h3>${x.t}</h3><div class="meta">${x.f?'Film':x.s} · ${x.p} · ${x.y}</div>
+    ${g.items.length>1?`<div class="seasons" role="group" aria-label="Choose a season of ${x.t}">${g.items.map((it,i)=>`<button class="sn" data-g="${gi}" data-i="${i}" aria-pressed="${i===g.sel}" aria-label="${it.s}">${snLab(it.s)}</button>`).join('')}</div>`:''}
+    <div class="bar"><span>Critics</span><div class="track"><div class="fill c" style="width:${x.c}%"></div></div><b>${x.c}%</b></div>
+    <div class="bar"><span>Audience</span><div class="track"><div class="fill a" style="width:${x.a}%"></div></div><b>${x.a}%</b></div></div></div>
+    <div class="body"><p class="say"><strong class="c">Critics</strong>${x.cs}</p><p class="say"><strong class="a">Audience</strong>${x.as}</p>
+    ${x.rep?'<span class="tag">★ Score as reported in the news; it may have changed since.</span>':''}<cite>${cite(x.src)}</cite></div></article>`}).join('')||'<p class="empty">No titles match. Try a different search or filter.</p>';
+  Promise.all($$('.poster[data-q]').map(p=>getImg(p.dataset.q).then(u=>{if(u){p.style.backgroundImage=`url("${u}")`;p.classList.add('has')}return !!u}))).then(r=>{$('#pnote').textContent=r.length&&!r.some(Boolean)?'Showing original poster art. Real posters could not load in this window; open the saved file in Chrome to try again.':''});
+  $('#count').textContent=`Showing ${vis.length} of ${list.length} titles`;
+  $('#more').hidden=vis.length>=list.length;
+}
+$$('[data-sort]').forEach(b=>b.onclick=()=>{sort=b.dataset.sort;$$('[data-sort]').forEach(o=>o.setAttribute('aria-pressed',o===b));render()});
+$$('[data-filt]').forEach(b=>b.onclick=()=>{filt=b.dataset.filt;limit=8;GROUPS.forEach(g=>{if(!F[filt](g.items[g.sel])){const m=g.items.findIndex(F[filt]);if(m>=0)g.sel=m}});$$('[data-filt]').forEach(o=>o.setAttribute('aria-pressed',o===b));render()});
+$('#cards').onclick=e=>{const b=e.target.closest('.sn');if(!b)return;GROUPS[+b.dataset.g].sel=+b.dataset.i;render()};
+$('#q').oninput=e=>{term=e.target.value.trim().toLowerCase();limit=8;render()};
+$('#more').onclick=()=>{limit+=8;render()};
+render();
+
+// Hero dials
+const C=2*Math.PI*62;
+function dials(){$$('.d').forEach(c=>{c.style.strokeDasharray=C;c.style.stroke=c.dataset.col;c.style.strokeDashoffset=C;c.style.transition='stroke-dashoffset 1.4s ease';
+  setTimeout(()=>c.style.strokeDashoffset=C*(1-c.dataset.v/100),200)});
+  $$('[data-count]').forEach(n=>{const to=+n.dataset.count;let v=0;const id=setInterval(()=>{v=Math.min(to,v+2);n.textContent=v+'%';if(v>=to)clearInterval(id)},22)})}
+dials();
+
+// Gap Lab
+function lab(){
+  const c=+$('#rc').value,a=+$('#ra').value,d=c-a,ad=Math.abs(d);
+  $('#vc').textContent=c;$('#va').textContent=a;$('#vg').textContent=ad;
+  let h,p,col='var(--gap)';
+  if(ad<10){h='Consensus';p='Critics and viewers broadly agree, so the score is a fairly reliable signal. Still skim one review from each side to see what to expect.';col='var(--aud)'}
+  else if(d>=10){h='Critics like it more';p=ad>=30?'This is a big split. Read audience complaints: are they about pacing, changes to a source story, or an organized backlash? If those don’t bother you, the critics’ praise may apply to you.':'Moderate split. Critics see craft that some viewers don’t enjoy. Check the audience comments for deal-breakers.'}
+  else{h='Audience likes it more';p=ad>=30?'Viewers love something critics don’t. Read critic reviews to learn what they criticize, then decide if you care more about craft or simple enjoyment.':'Moderate split. This may be a crowd-pleaser with flaws critics notice. Read both sides to see if those flaws matter to you.'}
+  $('#verdict').style.borderLeftColor=col;
+  $('#verdict').innerHTML=`<h3>${h}</h3><p>${p}</p>`;
+}
+['#rc','#ra'].forEach(s=>$(s).addEventListener('input',lab));lab();
+
+// Checklist
+function prog(){const n=$$('#steps li.done').length;$('#pbar').style.width=n*25+'%';$('#ptxt').textContent=n===4?'All done. You’re ready to press play.':n+' of 4 steps done'}
+$$('#steps li').forEach(li=>{const t=()=>{li.classList.toggle('done');li.setAttribute('aria-checked',li.classList.contains('done'));prog()};
+  li.onclick=t;li.onkeydown=e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();t()}}});
+
+// Active nav link
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)$$('nav a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id))}),{rootMargin:'-45% 0px -50% 0px'});
+$$('section').forEach(s=>io.observe(s));
+</script>
+</body>
+</html>
