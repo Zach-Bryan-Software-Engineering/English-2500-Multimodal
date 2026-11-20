@@ -133,9 +133,6 @@ footer{width:min(1240px,100% - 24px);margin:0 auto;padding:1.5rem 0 3rem;color:#
 .moreBar{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-top:1.2rem}
 .why .i img{display:block}
 @media(max-width:760px){.plot{grid-template-columns:1fr}.top{grid-template-columns:96px 1fr}}
-.pset{margin:0 0 1.2rem;border:1px solid var(--gold-d);border-radius:6px;padding:.7rem 1rem;background:#0d0606}
-.pset summary{cursor:pointer;font:14px var(--type);letter-spacing:.06em;text-transform:uppercase;color:#f5cf6e}
-.prow{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;margin:.6rem 0}
 .m0{--art:repeating-conic-gradient(from 0deg at 50% 72%,hsl(var(--h) 55% 32%) 0 9deg,hsl(var(--h) 55% 19%) 9deg 18deg)}
 .m1{--art:repeating-radial-gradient(circle at 50% 100%,hsl(var(--h) 50% 32%) 0 16px,hsl(var(--h) 50% 17%) 16px 32px)}
 .m2{--art:repeating-linear-gradient(135deg,hsl(var(--h) 50% 30%) 0 14px,hsl(var(--h) 50% 18%) 14px 28px)}
@@ -348,17 +345,6 @@ const wiki=Q=>{const f=Q.startsWith('film:'),q=f?Q.slice(5):Q,pref=f?/film/i:/tv
   return fetch('https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrlimit=6&gsrsearch='+encodeURIComponent(q+(f?' film':' television series'))+'&prop=pageimages&piprop=thumbnail&pithumbsize=342').then(r=>r.json()).then(j=>{
   const m=Object.values((j.query||{}).pages||{}).filter(p=>p.thumbnail&&ok(p.title,q)&&!BAD.test(p.title)&&(f||!/film\)/i.test(p.title))).sort((a,b)=>(pref.test(a.title)?0:1)-(pref.test(b.title)?0:1)||a.index-b.index)[0];return m?m.thumbnail.source:null})};
 const getImg=q=>{if(!IMG.has(q))IMG.set(q,Promise.resolve(BAKED[q]||null).then(u=>u||tmdb(q).catch(()=>null)).then(u=>u||tvmaze(q).catch(()=>null)).then(u=>u||wiki(q).catch(()=>null)));return IMG.get(q)};
-$('#tk').value=key()?'••••••••':'';
-$('#tsave').onclick=()=>{const v=$('#tk').value.trim();if(!v||v.startsWith('•'))return $('#pstat').textContent='Paste your TMDB key first.';
-  try{localStorage.setItem('tmdbKey',v)}catch(e){}IMG.clear();render();$('#tk').value='••••••••';$('#pstat').textContent='Key saved. Loading posters…'};
-$('#bake').onclick=async()=>{const st=$('#pstat'),qs=[...new Set(SHOWS.map(x=>x.q))],out={};let n=0;
-  for(const q of qs){st.textContent=`Saving posters… ${++n} of ${qs.length}`;
-    try{const u=await getImg(q);if(!u)continue;if(u.startsWith('data:')){out[q]=u;continue}
-      const b=await(await fetch(u)).blob();out[q]=await new Promise(r=>{const f=new FileReader();f.onload=()=>r(f.result);f.readAsDataURL(b)})}catch(e){}}
-  const got=Object.keys(out).length;if(!got){st.textContent='No posters could be saved. Add a TMDB key first and make sure posters are showing.';return}
-  const M1='/*BA'+'KE*/',M2='/*E'+'ND*/',h='<!DOCTYPE html>\n'+document.documentElement.outerHTML,i=h.indexOf(M1+'const BAKED='),j=h.indexOf(M2,i)+M2.length;
-  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([h.slice(0,i)+M1+'const BAKED='+JSON.stringify(out)+M2+h.slice(j)],{type:'text/html'}));
-  a.download='two-scores-one-show-with-posters.html';a.click();st.textContent=`Downloaded a copy with ${got} of ${qs.length} posters built in. Submit that file.`};
 
 let sort='gap',filt='all',term='',limit=8;
 const F={all:()=>1,split:x=>Math.abs(gap(x))>=20,agree:x=>kind(x)==='agree',critics:x=>kind(x)==='critics',audience:x=>kind(x)==='audience'};
